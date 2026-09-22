@@ -97,11 +97,12 @@ class JwtVerifier
             // Authenticate the virtual user for this request
             Auth::setUser($localUser);
 
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('JWT Verification Failed: ' . $e->getMessage());
             return response()->json([
-                'message' => 'Invalid token.',
-                'error' => $e->getMessage()
+                'message' => 'Invalid token or server error.',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ], 401);
         }
 
